@@ -58,4 +58,14 @@ public class City {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", provinceId=" + provinceId +
+                ", cityName='" + cityName + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
