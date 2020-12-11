@@ -1,5 +1,7 @@
 package org.spring.springboot.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spring.springboot.domain.City;
 import org.spring.springboot.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 public class CityRestController {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     private CityService cityService;
@@ -33,7 +37,9 @@ public class CityRestController {
      */
     @RequestMapping(value = "/api/{id}", method = RequestMethod.GET)
     public void postTest(@PathVariable(value="id") String id) {
+        log.error("日志测试开始啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
         System.out.println(id);
+        log.error("日志测试结束啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
     }
 
 }
