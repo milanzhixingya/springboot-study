@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by bysocket on 07/02/2017.
+ *
  */
 @RestController
 public class CityRestController {
@@ -20,7 +21,10 @@ public class CityRestController {
     private CityService cityService;
 
     /***
-     * 访问路径：http://localhost:8080/api/city?cityName="济南"
+     * 访问路径：http://localhost:8080/api/city?cityName=济南
+     * centos放项目jar包的路径为：/usr/projectown
+     * 注意事项：由于本地虚拟机centos中安装的mysql版本和本地windows安装的mysql的版本不一样，
+     * 所以在centos中运行时要把pom.xml中的mysql-connector-java的版本改为<mysql-connector>8.0.11</mysql-connector>
      * @param cityName
      * @return
      */

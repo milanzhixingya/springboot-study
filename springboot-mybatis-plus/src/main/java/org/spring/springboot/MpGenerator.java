@@ -54,7 +54,7 @@ public class MpGenerator {
         // gc.setServiceName("MP%sService");
         // gc.setServiceImplName("%sServiceDiy");
         // gc.setControllerName("%sAction");
-        mpg.setGlobalConfig(gc);
+        //mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
