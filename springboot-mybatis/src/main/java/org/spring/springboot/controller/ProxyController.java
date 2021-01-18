@@ -1,5 +1,6 @@
 package org.spring.springboot.controller;
 
+import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 import org.spring.springboot.domain.City;
 import org.spring.springboot.domain.Text;
 import org.spring.springboot.service.Person;
@@ -9,6 +10,7 @@ import org.spring.springboot.service.impl.StudentsProxy;
 
 import java.lang.reflect.Field;
 import java.sql.Time;
+import java.util.Date;
 import java.util.concurrent.*;
 
 /***
@@ -22,7 +24,8 @@ public class ProxyController {
         //getClassAttribute();
         //appointTest();
         //threadTest();
-        threadPoolTest();
+        //threadPoolTest();
+        threadPoolTest4();
     }
 
     /***
@@ -159,8 +162,12 @@ public class ProxyController {
        new Thread(futureTask).start();
         new Thread(futureTask2).start();
         try {
+            Date startDate = new Date();
+            System.out.println("干点别的");
             System.out.println(futureTask.get().toString());
             System.out.println(futureTask2.get().toString());
+            Date endDate = new Date();
+            System.out.println("开始时间为："+startDate+"  结束时间为:"+endDate);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -170,22 +177,205 @@ public class ProxyController {
             System.out.println("主线程"+i);
         }*/
     }
-    public static Integer getCount(){
+
+    /***
+     * 有界阻塞队列
+     */
+    public static void threadPoolTest3(){
+        ExecutorService executorService = new ThreadPoolExecutor(2,5,0L,TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<Runnable>(1),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
+
+        FutureTask futureTask = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount();
+            }
+        });
+        FutureTask futureTask2 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount2();
+            }
+        });
+        FutureTask futureTask3 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount3();
+            }
+        });
+        FutureTask futureTask4 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount4();
+            }
+        });
+        FutureTask futureTask5 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount5();
+            }
+        });
+       // executorService.submit(futureTask);
+        //executorService.submit(futureTask2);
+       /* new Thread(futureTask).start();
+        new Thread(futureTask2).start();*/
         try {
-            Thread.sleep(2000);
+            Date startDate = new Date();
+            for(int i = 0;i<5;i++){
+                if(i == 0){
+                    executorService.submit(futureTask);
+                }
+                if(i == 1){
+                    executorService.submit(futureTask2);
+                }
+                if(i == 2){
+                    executorService.submit(futureTask3);
+                }
+                if(i == 3){
+                    executorService.submit(futureTask4);
+                }
+                if(i == 4){
+                    executorService.submit(futureTask5);
+                }
+            }
+            System.out.println("干点别的");
+            System.out.println(futureTask.get().toString());
+            System.out.println(futureTask2.get().toString());
+            System.out.println(futureTask3.get().toString());
+            System.out.println(futureTask4.get().toString());
+            System.out.println(futureTask5.get().toString());
+            Date endDate = new Date();
+            System.out.println("开始时间为："+startDate+"  结束时间为:"+endDate);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-        System.out.println("我在这里");
-        return 350;
+
     }
-    public static Integer getCount2(){
+    /***
+     * 无界阻塞队列
+     */
+    public static void threadPoolTest4(){
+        ExecutorService executorService = new ThreadPoolExecutor(6,10,0L,TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
+
+        FutureTask futureTask = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount();
+            }
+        });
+        FutureTask futureTask2 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount2();
+            }
+        });
+        FutureTask futureTask3 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount3();
+            }
+        });
+        FutureTask futureTask4 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount4();
+            }
+        });
+        FutureTask futureTask5 = new FutureTask(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return getCount5();
+            }
+        });
+        // executorService.submit(futureTask);
+        //executorService.submit(futureTask2);
+       /* new Thread(futureTask).start();
+        new Thread(futureTask2).start();*/
         try {
+            Date startDate = new Date();
+            for(int i = 0;i<5;i++){
+                if(i == 0){
+                    executorService.submit(futureTask);
+                }
+                if(i == 1){
+                    executorService.submit(futureTask2);
+                }
+                if(i == 2){
+                    executorService.submit(futureTask3);
+                }
+                if(i == 3){
+                    executorService.submit(futureTask4);
+                }
+                if(i == 4){
+                    executorService.submit(futureTask5);
+                }
+            }
+            System.out.println("干点别的");
+            System.out.println(futureTask.get().toString());
+            System.out.println(futureTask2.get().toString());
+            System.out.println(futureTask3.get().toString());
+            System.out.println(futureTask4.get().toString());
+            System.out.println(futureTask5.get().toString());
+            Date endDate = new Date();
+            System.out.println("开始时间为："+startDate+"  结束时间为:"+endDate);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static Integer getCount(){
+        try {
+            System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 100);
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("我在这里");
+        System.out.println("我在这里1");
+        return 350;
+    }
+    public static Integer getCount2(){
+        try {
+            System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 200);
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我在这里2");
         return 450;
+    }
+    public static Integer getCount3(){
+        try {
+            System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 300);
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我在这里3");
+        return 550;
+    }
+    public static Integer getCount4(){
+        try {
+            System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 400);
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我在这里4");
+        return 650;
+    }
+    public static Integer getCount5(){
+        try {
+            System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 500);
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("我在这里5");
+        return 650;
     }
 }
