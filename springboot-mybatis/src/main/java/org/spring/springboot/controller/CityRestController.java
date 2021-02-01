@@ -31,10 +31,17 @@ public class CityRestController {
     @RequestMapping(value = "/api/city", method = RequestMethod.GET)
     @ResponseBody
     public String findOneCity(@RequestParam(value = "cityName", required = true) String cityName) {
+        System.out.println("SSSSSS123");
         City city = cityService.findCityByName(cityName);
         return city.toString();
     }
-
+    @RequestMapping(value = "/api/city2", method = RequestMethod.GET)
+    @ResponseBody
+    public String dockerTest(@RequestParam(value = "cityName", required = true) String cityName) {
+        System.out.println("ceshiyixiaba");
+       // City city = cityService.findCityByName(cityName);
+        return "hhaaas*******";
+    }
     /***
      * 访问路径：http://localhost:8080/api/1234
      * @param id

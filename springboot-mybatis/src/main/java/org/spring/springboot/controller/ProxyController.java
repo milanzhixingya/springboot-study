@@ -10,7 +10,9 @@ import org.spring.springboot.service.impl.StudentsProxy;
 
 import java.lang.reflect.Field;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.*;
 
 /***
@@ -25,7 +27,8 @@ public class ProxyController {
         //appointTest();
         //threadTest();
         //threadPoolTest();
-        threadPoolTest4();
+        //threadPoolTest4();
+       threadPoolTest5();
     }
 
     /***
@@ -156,7 +159,7 @@ public class ProxyController {
         FutureTask futureTask2 = new FutureTask(new Callable() {
             @Override
             public Object call() throws Exception {
-                return getCount2();
+                return getCount();
             }
         });
        new Thread(futureTask).start();
@@ -194,7 +197,7 @@ public class ProxyController {
         FutureTask futureTask2 = new FutureTask(new Callable() {
             @Override
             public Object call() throws Exception {
-                return getCount2();
+                return getCount2(1);
             }
         });
         FutureTask futureTask3 = new FutureTask(new Callable() {
@@ -269,7 +272,7 @@ public class ProxyController {
         FutureTask futureTask2 = new FutureTask(new Callable() {
             @Override
             public Object call() throws Exception {
-                return getCount2();
+                return getCount2(2);
             }
         });
         FutureTask futureTask3 = new FutureTask(new Callable() {
@@ -328,6 +331,40 @@ public class ProxyController {
         }
 
     }
+    /***
+     * 无界阻塞队列测试2(futureTask.get()会阻塞线程，只有当所有任务都执行完毕之后，再开始执行主线程)
+     */
+    public static void threadPoolTest5(){
+        try{
+            Date startDate = new Date();
+            ExecutorService executorService = new ThreadPoolExecutor(5,10,0L,TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue<Runnable>(),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
+            //CountDownLatch latch = new CountDownLatch(5);
+            List<FutureTask> list = new ArrayList<FutureTask>();
+           for(int i = 0;i<5;i++){
+               final int j = i;
+               FutureTask futureTask = new FutureTask(new Callable<Object>() {
+                   @Override
+                   public Object call() throws Exception {
+                       return getCount2(j);
+                   }
+               }
+               );
+               executorService.submit(futureTask);
+               list.add(futureTask);
+
+           }
+            for(FutureTask futureTask : list){
+                System.out.println(futureTask.get());
+            }
+               Date endDate = new Date();
+               System.out.println("开始时间为："+startDate+"  结束时间为:"+endDate);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public static Integer getCount(){
         try {
             System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 100);
@@ -338,15 +375,16 @@ public class ProxyController {
         System.out.println("我在这里1");
         return 350;
     }
-    public static Integer getCount2(){
+    public static Integer getCount2(int j){
+        int returnResult = 450;
         try {
             System.out.println("线程名称："+Thread.currentThread()+"当前数字为："+ 200);
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("我在这里2");
-        return 450;
+        System.out.println("我在这里2**="+j);
+        return returnResult+j;
     }
     public static Integer getCount3(){
         try {
